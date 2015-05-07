@@ -38,3 +38,4 @@ done
 
 grumpi::io::echoln 'Using properties file' $PROP_FILE
 grumpi::gen::generate
+grumpi::cleanAndExit

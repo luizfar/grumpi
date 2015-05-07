@@ -18,6 +18,7 @@ function grumpi::die() {
 
 function grumpi::cleanAndExit() {
   grumpi::io::echo 'Cleaning up...'
+  grumpi::gen::cleanup
   EXIT_CODE=$1
   if [ -z "$EXIT_CODE" ]; then
     exit 0
