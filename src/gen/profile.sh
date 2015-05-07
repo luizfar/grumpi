@@ -4,7 +4,7 @@ function grumpi::gen::profiles::installProvisioningProfile() {
   grumpi::io::echo "Installing mobile provisioning profile..."
 
   PROFILES_INSTALL_PATH=~/Library/MobileDevice/Provisioning\ Profiles
-  PROFILE_PATH=$( grumpi::readProperty 'provisioningProfile' )
+  PROFILE_PATH=$(grumpi::readProperty 'provisioningProfile')
 
   if [ ! -e "$PROFILES_INSTALL_PATH" ]; then
     mkdir -p "$PROFILES_INSTALL_PATH"
