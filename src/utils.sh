@@ -1,16 +1,7 @@
 #!/bin/bash
 
 function grumpi::readProperty() {
-  echo `grep "$1" "$PROP_FILE" | awk -F':' '{print $2}' | xargs`
-}
-
-function grumpi::readPropertyOrDie() {
-  VALUE=`grumpi::readProperty "$1"`
-  if [ -z "$VALUE" ]; then
-    grumpi::io::error "Property '$1' not set or invalid."
-    gurmpi::cleanAndExit 1
-  fi
-  echo "$VALUE"
+  echo `grep "^$1" "$PROP_FILE" | awk -F':' '{print $2}' | xargs`
 }
 
 function grumpi::die() {

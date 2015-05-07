@@ -32,15 +32,16 @@ function grumpi::gen::xcode::generateIpaFromArchive() {
   INITIAL_PATH=`pwd`
   cd $GRUMPI_BUILD_PATH/VMAppWithKonylib
 
-  xcodebuild -exportArchive -archivePath build/archive/$GRUMPI_ID.xcarchive -exportPath build/grumpi.ipa -exportFormat ipa -exportWithOriginalSigningIdentity
+  xcodebuild -exportArchive -archivePath build/archive/$GRUMPI_ID.xcarchive -exportPath build/"$GRUMPI_NAME".ipa -exportFormat ipa -exportWithOriginalSigningIdentity
 
-  if [ ! -f build/grumpi.ipa ]; then
+  if [ ! -f build/"$GRUMPI_NAME".ipa ]; then
     grumpi::io::error "Oops, an error occurred during IPA generation. Please check the logs."
     grumpi::cleanAndExit
     exit 1
   fi
 
-  cp build/grumpi.ipa $INITIAL_PATH/grumpi.ipa
+  cp build/"$GRUMPI_NAME".ipa $INITIAL_PATH/"$GRUMPI_NAME".ipa
+  grumpi::io::echo "$GRUMPI_NAME.ipa generated successfully!"
 
   cd $INITIAL_PATH
 }

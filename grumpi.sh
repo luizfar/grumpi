@@ -30,8 +30,12 @@ while [ "$1" != "" ]; do
 done
 
 TMP_PATH='/tmp'
-GRUMPI_ID=grumpi-$(date "+%s")
+GRUMPI_ID="grumpi-$(date "+%s")"
 GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
+GRUMPI_NAME=$(grumpi::readProperty 'name')
+if [ -z "$GRUMPI_NAME" ]; then
+  GRUMPI_NAME="grumpi"
+fi
 
-grumpi::io::echo 'Using properties file' $PROP_FILE
+grumpi::io::echoln 'Using properties file' $PROP_FILE
 grumpi::gen::generate

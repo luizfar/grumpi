@@ -11,6 +11,11 @@ function grumpi::io::echo() {
   echo -e "${GRUMPI_COLOR_CYAN}$GRUMPI_PREFIX ${GRUMPI_COLOR_PURPLE}$@${GRUMPI_COLOR_NO_COLOR}"
 }
 
+function grumpi::io::echoln() {
+  grumpi::io::echo $@
+  echo ""
+}
+
 function grumpi::io::error() {
   echo -e "${GRUMPI_COLOR_CYAN}$GRUMPI_PREFIX ${GRUMPI_COLOR_RED}$@${GRUMPI_COLOR_NO_COLOR}"
 }

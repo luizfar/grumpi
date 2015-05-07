@@ -34,10 +34,14 @@ function grumpi::gen::validateData() {
 
   if [ $SOURCE == 'kony' ]; then
     KONY_PATH=$(grumpi::readProperty 'konyPath')
-    KONY_PATH=$(grumpi::toAbsolutePath "$KONY_PATH")
+    if [ -z "$KONY_PATH" ]; then
+      grumpi::io::error "konyPath property not provided. Please check your properties file."
+      grumpi::die
+    fi
 
-    if [ -z "$KONY_PATH" ] || [ ! -e "$KONY_PATH" ]; then
-      grumpi::io::error "konyPath property not provided or not valid."
+    KONY_PATH=$(grumpi::toAbsolutePath "$KONY_PATH")
+    if [ ! -e "$KONY_PATH" ]; then
+      grumpi::io::error "konyPath not valid. Please check your properties file."
       grumpi::die
     fi
 
@@ -52,13 +56,15 @@ function grumpi::gen::validateData() {
   grumpi::gen::checkForProperty 'schemesPath'
   grumpi::gen::checkForProperty 'certPath'
   grumpi::gen::checkForProperty 'p12Path'
+
+  grumpi::io::echoln "All data provided OK!"
 }
 
 function grumpi::gen::generate() {
   grumpi::io::echo "Checking the data provided..."
   grumpi::gen::validateData
 
-  grumpi::io::echo "Generating iOS IPA..."
+  grumpi::io::echoln "Generating iOS IPA..."
 
   mkdir -p $GRUMPI_BUILD_PATH
 
