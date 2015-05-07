@@ -12,12 +12,6 @@ function grumpi::gen::kony::extractKarIntoXCodeProject() {
   fi
 
   KONY_PATH=$( grumpi::readProperty 'konyPath' )
-  if [ -z "$KONY_PATH" ] || [ ! -e "$KONY_PATH" ]; then
-    grumpi::io::error "Path to Kony Studio installation not found, or konyPath property not set."
-    grumpi::io::error "Please ensure Kony Studio is installed, and its path is set in your properties file."
-    grumpi::cleanAndExit
-  fi
-
   KONY_IOS_PLUGIN_PATH=$KONY_PATH/Kony_Studio/plugins/com.kony.ios*
   cp $KONY_IOS_PLUGIN_PATH .
   unzip -oq com.kony.ios*

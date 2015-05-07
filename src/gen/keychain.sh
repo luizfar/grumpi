@@ -40,18 +40,7 @@ function grumpi::gen::keychain::createKeychain() {
   grumpi::gen::keychain::deleteKeychainIfItExists
 
   P12_PATH=$( grumpi::readProperty 'p12Path' )
-  if [ -z "$P12_PATH" ] || [ ! -e "$P12_PATH" ]; then
-    grumpi::io::error "Could not find path to p12 file, or the p12Path property is not set."
-    grumpi::cleanAndExit
-    exit 1
-  fi
-
   CERT_PATH=$( grumpi::readProperty 'certPath' )
-  if [ -z "$CERT_PATH" ] || [ ! -e "$CERT_PATH" ]; then
-    grumpi::io:error "Could not find path to certificate, or the certPath property is not set."
-    grumpi::cleanAndExit
-    exit 1
-  fi
 
   grumpi::io::echo "Creating $KEYCHAIN_NAME..."
   security create-keychain -p $CERT_PASSWD $GRUMPI_KEYCHAIN_NAME

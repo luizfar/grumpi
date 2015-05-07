@@ -6,12 +6,6 @@ function grumpi::gen::profiles::installProvisioningProfile() {
   PROFILES_INSTALL_PATH=~/Library/MobileDevice/Provisioning\ Profiles
   PROFILE_PATH=$( grumpi::readProperty 'provisioningProfile' )
 
-  if [ -z "$PROFILE_PATH" ] || [ ! -e "$PROFILE_PATH" ]; then
-    grumpi::io::error "Could not find path to provisioning profile."
-    grumpi::io::error "Please ensure 'provisioningProfile' is set in your properties file."
-    grumpi::cleanAndExit
-  fi
-
   if [ ! -e "$PROFILES_INSTALL_PATH" ]; then
     mkdir -p "$PROFILES_INSTALL_PATH"
   fi
