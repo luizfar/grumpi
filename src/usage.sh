@@ -47,7 +47,4 @@ function grumpi::usage::printPropertiesHelp() {
   echo ""
   echo "     p12Path"
   echo "             Mandatory. Path to the .p12 file gotten from the iOS Developer Center, used when signing the IPA. You need to provide the password for the certificate p12 when running Grumpi by means of the -p option."
-  echo ""
-  echo "     schemesPath"
-  echo "             Mandatory. Path to a folder containing the schemes to be used when building the IPA."
 }

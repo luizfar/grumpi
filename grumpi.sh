@@ -4,6 +4,7 @@ TMP_PATH='/tmp'
 GRUMPI_ID="grumpi-$(date "+%s")"
 GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
 KONY_GENERATED_PROJECT_NAME="VMAppWithKonylib"
+ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 source src/gen.sh
 source src/io.sh

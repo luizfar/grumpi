@@ -6,19 +6,6 @@ function grumpi::gen::xcode::readProvisioningProfileUuid() {
   echo $uuid
 }
 
-function grumpi::gen::xcode::getProjectPath() {
-  SOURCE=$(grumpi::readProperty 'source')
-
-  if [ $SOURCE == 'kony' ]; then
-    PROJECT_PATH="$GRUMPI_BUILD_PATH/$KONY_GENERATED_PROJECT_NAME"
-  else
-    PROJECT_PATH=$(grumpi::readProperty 'projectPath')
-    PROJECT_PATH=$(grumpi::toAbsolutePath "$PROJECT_PATH")
-  fi
-
-  echo "$PROJECT_PATH"
-}
-
 function grumpi::gen::xcode::archiveXcodeProjectAndGenerateFromArchive {
   grumpi::io::echo "Archiving xcode project..."
 
@@ -29,12 +16,12 @@ function grumpi::gen::xcode::archiveXcodeProjectAndGenerateFromArchive {
   PROVISIONING_PROFILE=$(grumpi::gen::xcode::readProvisioningProfileUuid $PROFILE_PATH)
 
   INITIAL_PATH=`pwd`
-  PROJECT_PATH=$(grumpi::gen::xcode::getProjectPath)
-  PROJECT_ID=$(find "$PROJECT_PATH" -name '*.xcodeproj')
+  PROJECT_PATH=$(grumpi::getProjectPath)
+  PROJECT_ID=$(grumpi::getXCodeProjectId)
   ARCHIVE_PATH="$GRUMPI_BUILD_PATH/build/archive/"
 
   mkdir -p "$ARCHIVE_PATH"
-  xcodebuild archive -project "$PROJECT_ID" -scheme KRelease -archivePath "$ARCHIVE_PATH/$GRUMPI_ID" CODE_SIGN_IDENTITY="$SIGNING_ID" PROVISIONING_PROFILE="$PROVISIONING_PROFILE"
+  xcodebuild archive -project "$PROJECT_PATH/$PROJECT_ID.xcodeproj" -scheme KRelease -archivePath "$ARCHIVE_PATH/$GRUMPI_ID" CODE_SIGN_IDENTITY="$SIGNING_ID" PROVISIONING_PROFILE="$PROVISIONING_PROFILE"
 
   if [ ! -d "$ARCHIVE_PATH/$GRUMPI_ID".xcarchive ]; then
     grumpi::io::error "Could not archive the project. Please check the logs."

@@ -67,7 +67,6 @@ function grumpi::gen::validateData() {
   fi
 
   grumpi::gen::checkForProperty 'provisioningProfile'
-  grumpi::gen::checkForProperty 'schemesPath'
   grumpi::gen::checkForProperty 'certPath'
   grumpi::gen::checkForProperty 'p12Path'
 
