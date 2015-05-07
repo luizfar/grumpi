@@ -32,6 +32,20 @@ function grumpi::gen::validateData() {
     grumpi::die
   fi
 
+  if [ $SOURCE == 'xcode' ]; then
+    PROJECT_PATH=$(grumpi::readProperty 'projectPath')
+    if [ -z "$PROJECT_PATH" ]; then
+      grumpi::io::error "projectPath not provided. Please check your properties file."
+      grumpi::die
+    fi
+
+    PROJECT_PATH=$(grumpi::toAbsolutePath "$PROJECT_PATH")
+    if [ ! -e "$PROJECT_PATH" ]; then
+      grumpi::io::error "projectPath not valid. Please check your properties file."
+      grumpi::die
+    fi
+  fi
+
   if [ $SOURCE == 'kony' ]; then
     KONY_PATH=$(grumpi::readProperty 'konyPath')
     if [ -z "$KONY_PATH" ]; then
@@ -73,10 +87,9 @@ function grumpi::gen::generate() {
   SOURCE=$(grumpi::readProperty 'source')
   if [ $SOURCE == 'kony' ]; then
     grumpi::gen::kony::extractKarIntoXCodeProject
+    grumpi::gen::schemes::prepareXcodeProjectSchemes
   fi
 
-  grumpi::gen::schemes::prepareXcodeProjectSchemes
   grumpi::gen::keychain::createKeychain
-  grumpi::gen::xcode::archiveXcodeProject
-  grumpi::gen::xcode::generateIpaFromArchive
+  grumpi::gen::xcode::archiveXcodeProjectAndGenerateFromArchive
 }

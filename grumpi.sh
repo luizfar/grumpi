@@ -1,4 +1,9 @@
 #!/bin/bash
+
+TMP_PATH='/tmp'
+GRUMPI_ID="grumpi-$(date "+%s")"
+GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
+
 source src/gen.sh
 source src/io.sh
 source src/usage.sh
@@ -28,14 +33,6 @@ while [ "$1" != "" ]; do
   esac
   shift
 done
-
-TMP_PATH='/tmp'
-GRUMPI_ID="grumpi-$(date "+%s")"
-GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
-GRUMPI_NAME=$(grumpi::readProperty 'name')
-if [ -z "$GRUMPI_NAME" ]; then
-  GRUMPI_NAME="grumpi"
-fi
 
 grumpi::io::echoln 'Using properties file' $PROP_FILE
 grumpi::gen::generate

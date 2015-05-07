@@ -30,7 +30,7 @@ function grumpi::gen::keychain::resetDefaultKeychain() {
 
 function grumpi::gen::keychain::deleteKeychainIfItExists() {
   if [ -f "$GRUMPI_KEYCHAIN_PATH" ]; then
-    grumpi::io::echo "$GRUMPI_KEYCHAIN_PATH exists. Deleting $KEYCHAIN_NAME."
+    grumpi::io::echo "$GRUMPI_KEYCHAIN_PATH exists. Deleting $GRUMPI_KEYCHAIN_NAME."
     security delete-keychain $GRUMPI_KEYCHAIN_NAME
   fi
 }
@@ -42,7 +42,7 @@ function grumpi::gen::keychain::createKeychain() {
   P12_PATH=$( grumpi::readProperty 'p12Path' )
   CERT_PATH=$( grumpi::readProperty 'certPath' )
 
-  grumpi::io::echo "Creating $KEYCHAIN_NAME..."
+  grumpi::io::echo "Creating $GRUMPI_KEYCHAIN_NAME..."
   security create-keychain -p $CERT_PASSWD $GRUMPI_KEYCHAIN_NAME
 
   security import $P12_PATH -P $CERT_PASSWD -k $GRUMPI_KEYCHAIN_NAME -A

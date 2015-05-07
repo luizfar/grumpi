@@ -6,41 +6,50 @@ function grumpi::gen::xcode::readProvisioningProfileUuid() {
   echo $uuid
 }
 
-function grumpi::gen::xcode::archiveXcodeProject() {
+function grumpi::gen::xcode::getProjectPath() {
+  SOURCE=$(grumpi::readProperty 'source')
+  if [ $SOURCE == 'kony' ]; then
+    PROJECT_PATH=$GRUMPI_BUILD_PATH/VMAppWithKonylib
+  else
+    PROJECT_PATH=$(grumpi::readProperty 'projectPath')
+    PROJECT_PATH=$(grumpi::toAbsolutePath "$PROJECT_PATH")
+  fi
+  echo "$PROJECT_PATH"
+}
+
+function grumpi::gen::xcode::archiveXcodeProjectAndGenerateFromArchive {
   grumpi::io::echo "Archiving xcode project..."
 
-  SIGNING_ID=$( grumpi::readProperty 'signingId' )
-  PROFILE_PATH=$( grumpi::readProperty 'provisioningProfile' )
-  PROVISIONING_PROFILE=$( grumpi::gen::xcode::readProvisioningProfileUuid $PROFILE_PATH )
+  GRUMPI_NAME=$(grumpi::grumpiName)
+
+  SIGNING_ID=$(grumpi::readProperty 'signingId')
+  PROFILE_PATH=$(grumpi::readProperty 'provisioningProfile')
+  PROVISIONING_PROFILE=$(grumpi::gen::xcode::readProvisioningProfileUuid $PROFILE_PATH)
 
   INITIAL_PATH=`pwd`
-  cd $GRUMPI_BUILD_PATH/VMAppWithKonylib
+  PROJECT_PATH=$(grumpi::gen::xcode::getProjectPath)
+  PROJECT_ID=$(find "$PROJECT_PATH" -name '*.xcodeproj')
+  ARCHIVE_PATH="$GRUMPI_BUILD_PATH/build/archive/"
 
-  xcodebuild archive -project VMAppWithKonylib.xcodeproj -scheme KRelease -archivePath build/archive/"$GRUMPI_ID" CODE_SIGN_IDENTITY="$SIGNING_ID" PROVISIONING_PROFILE="$PROVISIONING_PROFILE"
+  mkdir -p "$ARCHIVE_PATH"
+  xcodebuild archive -project "$PROJECT_ID" -scheme KRelease -archivePath "$ARCHIVE_PATH/$GRUMPI_ID" CODE_SIGN_IDENTITY="$SIGNING_ID" PROVISIONING_PROFILE="$PROVISIONING_PROFILE"
 
-  if [ ! -d build/archive/"$GRUMPI_ID".xcarchive ]; then
+  if [ ! -d "$ARCHIVE_PATH/$GRUMPI_ID".xcarchive ]; then
     grumpi::io::error "Could not archive the project. Please check the logs."
     grumpi::cleanAndExit 1
   fi
 
-  cd $INITIAL_PATH
-}
-
-function grumpi::gen::xcode::generateIpaFromArchive() {
   grumpi::io::echo "Generating IPA..."
 
-  INITIAL_PATH=`pwd`
-  cd $GRUMPI_BUILD_PATH/VMAppWithKonylib
+  xcodebuild -exportArchive -archivePath "$ARCHIVE_PATH/$GRUMPI_ID".xcarchive -exportPath "$ARCHIVE_PATH/$GRUMPI_NAME".ipa -exportFormat ipa -exportWithOriginalSigningIdentity
 
-  xcodebuild -exportArchive -archivePath build/archive/$GRUMPI_ID.xcarchive -exportPath build/"$GRUMPI_NAME".ipa -exportFormat ipa -exportWithOriginalSigningIdentity
-
-  if [ ! -f build/"$GRUMPI_NAME".ipa ]; then
+  if [ ! -f "$ARCHIVE_PATH/$GRUMPI_NAME".ipa ]; then
     grumpi::io::error "Oops, an error occurred during IPA generation. Please check the logs."
     grumpi::cleanAndExit
     exit 1
   fi
 
-  cp build/"$GRUMPI_NAME".ipa $INITIAL_PATH/"$GRUMPI_NAME".ipa
+  cp "$ARCHIVE_PATH/$GRUMPI_NAME".ipa "$INITIAL_PATH/$GRUMPI_NAME".ipa
   grumpi::io::echo "$GRUMPI_NAME.ipa generated successfully!"
 
   cd $INITIAL_PATH

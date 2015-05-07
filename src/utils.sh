@@ -1,5 +1,13 @@
 #!/bin/bash
 
+function grumpi::grumpiName() {
+  GRUMPI_NAME=$(grumpi::readProperty 'name')
+  if [ -z "$GRUMPI_NAME" ]; then
+    GRUMPI_NAME="grumpi"
+  fi
+  echo "$GRUMPI_NAME"
+}
+
 function grumpi::readProperty() {
   echo `grep "^$1" "$PROP_FILE" | awk -F':' '{print $2}' | xargs`
 }
