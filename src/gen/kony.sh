@@ -7,8 +7,8 @@ function grumpi::gen::kony::extractKarIntoXCodeProject() {
 
   cd $GRUMPI_BUILD_PATH
 
-  if [ -e VMAppWithKonylib ]; then
-    rm -rf VMAppWithKonylib
+  if [ -e "$KONY_GENERATED_PROJECT_NAME" ]; then
+    rm -rf "$KONY_GENERATED_PROJECT_NAME"
   fi
 
   KONY_PATH=$(grumpi::readProperty 'konyPath')
@@ -18,7 +18,7 @@ function grumpi::gen::kony::extractKarIntoXCodeProject() {
   unzip -oq iOS-GA*
 
   grumpi::io::echo "Converting KAR into xcode project..."
-  cd VMAppWithKonylib/gen
+  cd "$KONY_GENERATED_PROJECT_NAME"/gen
   perl extract.pl $KAR_PATH
 
   cd $INITIAL_PATH

@@ -9,8 +9,8 @@ function grumpi::gen::schemes::prepareXcodeProjectSchemes() {
   INITIAL_PATH=`pwd`
   cd $GRUMPI_BUILD_PATH
 
-  mkdir VMAppWithKonylib/VMAppWithKonylib.xcodeproj/xcuserdata
-  cp -r $SCHEMES_PATH/user.xcuserdatad VMAppWithKonylib/VMAppWithKonylib.xcodeproj/xcuserdata/`whoami`.xcuserdatad
+  mkdir "$KONY_GENERATED_PROJECT_NAME/$KONY_GENERATED_PROJECT_NAME.xcodeproj/xcuserdata"
+  cp -r "$SCHEMES_PATH/user.xcuserdatad" "$KONY_GENERATED_PROJECT_NAME/$KONY_GENERATED_PROJECT_NAME.xcodeproj/xcuserdata/`whoami`.xcuserdatad"
 
   cd $INITIAL_PATH
 }

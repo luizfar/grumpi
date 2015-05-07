@@ -3,6 +3,7 @@
 TMP_PATH='/tmp'
 GRUMPI_ID="grumpi-$(date "+%s")"
 GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
+KONY_GENERATED_PROJECT_NAME="VMAppWithKonylib"
 
 source src/gen.sh
 source src/io.sh

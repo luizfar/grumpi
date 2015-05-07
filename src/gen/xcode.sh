@@ -9,8 +9,6 @@ function grumpi::gen::xcode::readProvisioningProfileUuid() {
 function grumpi::gen::xcode::getProjectPath() {
   SOURCE=$(grumpi::readProperty 'source')
 
-  KONY_GENERATED_PROJECT_NAME="VMAppWithKonylib"
-
   if [ $SOURCE == 'kony' ]; then
     PROJECT_PATH="$GRUMPI_BUILD_PATH/$KONY_GENERATED_PROJECT_NAME"
   else
