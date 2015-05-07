@@ -1,0 +1,2 @@
+Grumpi is a command line utility that generates .IPA files for iOS applications.
+It can generate .IPA packages either from an Xcode project or from a Kony archive (.KAR).
