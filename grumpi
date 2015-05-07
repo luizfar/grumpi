@@ -6,10 +6,10 @@ GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
 KONY_GENERATED_PROJECT_NAME="VMAppWithKonylib"
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-source src/gen.sh
-source src/io.sh
-source src/usage.sh
-source src/utils.sh
+source "$ROOT_DIR/src/gen.sh"
+source "$ROOT_DIR/src/io.sh"
+source "$ROOT_DIR/src/usage.sh"
+source "$ROOT_DIR/src/utils.sh"
 
 while [ "$1" != "" ]; do
   case $1 in

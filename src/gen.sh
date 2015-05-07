@@ -1,10 +1,10 @@
 #!/bin/bash
 
-source src/gen/keychain.sh
-source src/gen/kony.sh
-source src/gen/profile.sh
-source src/gen/schemes.sh
-source src/gen/xcode.sh
+source "$ROOT_DIR/src/gen/keychain.sh"
+source "$ROOT_DIR/src/gen/kony.sh"
+source "$ROOT_DIR/src/gen/profile.sh"
+source "$ROOT_DIR/src/gen/schemes.sh"
+source "$ROOT_DIR/src/gen/xcode.sh"
 
 function grumpi::gen::cleanup() {
   if [ -e $GRUMPI_BUILD_PATH ]; then
