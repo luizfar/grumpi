@@ -20,7 +20,7 @@ function grumpi::gen::xcode::archiveXcodeProject() {
 
   if [ ! -d build/archive/"$GRUMPI_ID".xcarchive ]; then
     grumpi::io::error "Could not archive the project. Please check the logs."
-    grumpi::cleanAndExit
+    grumpi::cleanAndExit 1
   fi
 
   cd $INITIAL_PATH

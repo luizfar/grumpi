@@ -1,14 +1,28 @@
 #!/bin/bash
-source src/io.sh
 source src/gen.sh
+source src/io.sh
+source src/usage.sh
 
 function grumpi::readProperty() {
   echo `grep "$1" "$PROP_FILE" | awk -F':' '{print $2}' | xargs`
 }
 
+function grumpi::readPropertyOrDie() {
+  VALUE=`grumpi::readProperty "$1"`
+  if [ -z "$VALUE" ]; then
+    grumpi::io::error "Property '$1' not set or invalid."
+    gurmpi::cleanAndExit 1
+  fi
+  echo "$VALUE"
+}
+
 function grumpi::cleanAndExit() {
   grumpi::io::echo 'Cleaning up...'
-  #grumpi::gen::cleanup
+  EXIT_CODE=$1
+  if [ -z "$EXIT_CODE" ]; then
+    exit 0
+  fi
+  exit $EXIT_CODE
 }
 
 function grumpi::toAbsolutePath() {
@@ -19,9 +33,30 @@ function grumpi::run() {
   grumpi::gen::generate
 }
 
-PROP_FILE=$(grumpi::toAbsolutePath "$1")
-CERT_PASSWD="$2"
-KAR_PATH=$(grumpi::toAbsolutePath "$3")
+while [ "$1" != "" ]; do
+  case $1 in
+    -f | --file )           shift
+                            PROP_FILE=$(grumpi::toAbsolutePath "$1")
+                            ;;
+    -p | --password )       shift
+                            CERT_PASSWD="$1"
+                            ;;
+    -k | --kar )            shift
+                            KAR_PATH=$(grumpi::toAbsolutePath "$1")
+                            ;;
+    -h | --help )           if [ "$2" == "properties" ]; then
+                              shift
+                              grumpi::usage::printPropertiesHelp
+                            else
+                              grumpi::usage::printHelp
+                            fi
+                            exit
+                            ;;
+    * )                     grumpi::usage
+                            exit 1
+  esac
+  shift
+done
 
 TMP_PATH='/tmp'
 GRUMPI_ID=grumpi-$( date "+%s" )
