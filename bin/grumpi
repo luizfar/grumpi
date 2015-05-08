@@ -5,7 +5,7 @@ INITIAL_PATH=`pwd`
 GRUMPI_ID="grumpi-$(date "+%s")"
 GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
 KONY_GENERATED_PROJECT_NAME="VMAppWithKonylib"
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 SAVE_XCODE_PROJECT=0
 
 source "$ROOT_DIR/src/gen.sh"
