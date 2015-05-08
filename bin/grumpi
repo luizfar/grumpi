@@ -13,6 +13,11 @@ source "$ROOT_DIR/src/io.sh"
 source "$ROOT_DIR/src/usage.sh"
 source "$ROOT_DIR/src/utils.sh"
 
+if [ -z "$1" ]; then
+  grumpi::usage::printHelp
+  exit 0
+fi
+
 while [ "$1" != "" ]; do
   case $1 in
     -f | --file )           shift
@@ -39,6 +44,11 @@ while [ "$1" != "" ]; do
   esac
   shift
 done
+
+if [ ! -e "$PROP_FILE" ]; then
+  grumpi::io::error "Properties file not found. Please ensure you are using the -f option with a valid properties file."
+  exit 1
+fi
 
 grumpi::io::echoln 'Using properties file' $PROP_FILE
 grumpi::gen::generate
