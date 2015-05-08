@@ -1,10 +1,12 @@
 #!/bin/bash
 
 TMP_PATH='/tmp'
+INITIAL_PATH=`pwd`
 GRUMPI_ID="grumpi-$(date "+%s")"
 GRUMPI_BUILD_PATH=$TMP_PATH/$GRUMPI_ID
 KONY_GENERATED_PROJECT_NAME="VMAppWithKonylib"
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+SAVE_XCODE_PROJECT=0
 
 source "$ROOT_DIR/src/gen.sh"
 source "$ROOT_DIR/src/io.sh"
@@ -21,6 +23,8 @@ while [ "$1" != "" ]; do
                             ;;
     -k | --kar )            shift
                             KAR_PATH=$(grumpi::toAbsolutePath "$1")
+                            ;;
+    -x | --generateXCode )  SAVE_XCODE_PROJECT=1
                             ;;
     -h | --help )           if [ "$2" == "properties" ]; then
                               shift

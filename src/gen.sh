@@ -8,6 +8,18 @@ source "$ROOT_DIR/src/gen/xcode.sh"
 
 function grumpi::gen::cleanup() {
   if [ -e $GRUMPI_BUILD_PATH ]; then
+
+    SOURCE=$(grumpi::readProperty 'source')
+    if [ $SOURCE == 'kony' ] && [ $SAVE_XCODE_PROJECT == 1 ]; then
+      PROJECT_PATH=$(grumpi::getProjectPath)
+      PROJECT_FOLDER=$(basename -- "$PROJECT_PATH")
+      grumpi::io::echo "Keeping Kony-generated Xcode project: '$PROJECT_FOLDER'."
+      if [ -e "$INITIAL_PATH/$PROJECT_FOLDER" ]; then
+        rm -rf "$INITIAL_PATH/$PROJECT_FOLDER"
+      fi
+      mv "$PROJECT_PATH" "$INITIAL_PATH/"
+    fi
+
     rm -rf $GRUMPI_BUILD_PATH
   fi
 }
