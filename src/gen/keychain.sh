@@ -39,8 +39,8 @@ function grumpi::gen::keychain::createKeychain() {
   grumpi::gen::keychain::storeDefaultKeychain
   grumpi::gen::keychain::deleteKeychainIfItExists
 
-  P12_PATH=$(grumpi::readProperty 'p12Path')
-  CERT_PATH=$(grumpi::readProperty 'certPath')
+  P12_PATH=$(grumpi::readPropertyAsPath 'p12Path')
+  CERT_PATH=$(grumpi::readPropertyAsPath 'certPath')
 
   grumpi::io::echo "Creating $GRUMPI_KEYCHAIN_NAME..."
   security create-keychain -p $CERT_PASSWD $GRUMPI_KEYCHAIN_NAME

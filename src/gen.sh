@@ -12,9 +12,9 @@ function grumpi::gen::cleanup() {
   fi
 }
 
-function grumpi::gen::checkForProperty() {
+function grumpi::gen::checkForPathProperty() {
   PROP_NAME="$1"
-  VALUE=$(grumpi::readProperty "$PROP_NAME")
+  VALUE=$(grumpi::readPropertyAsPath "$PROP_NAME")
   if [ -z "$VALUE" ] || [ ! -e "$VALUE" ]; then
     grumpi::io::error "$PROP_NAME not provided or not valid. Please check your properties file."
     grumpi::die
@@ -33,31 +33,11 @@ function grumpi::gen::validateData() {
   fi
 
   if [ $SOURCE == 'xcode' ]; then
-    PROJECT_PATH=$(grumpi::readProperty 'projectPath')
-    if [ -z "$PROJECT_PATH" ]; then
-      grumpi::io::error "projectPath not provided. Please check your properties file."
-      grumpi::die
-    fi
-
-    PROJECT_PATH=$(grumpi::toAbsolutePath "$PROJECT_PATH")
-    if [ ! -e "$PROJECT_PATH" ]; then
-      grumpi::io::error "projectPath not valid. Please check your properties file."
-      grumpi::die
-    fi
+    grumpi::gen::checkForPathProperty 'projectPath'
   fi
 
   if [ $SOURCE == 'kony' ]; then
-    KONY_PATH=$(grumpi::readProperty 'konyPath')
-    if [ -z "$KONY_PATH" ]; then
-      grumpi::io::error "konyPath property not provided. Please check your properties file."
-      grumpi::die
-    fi
-
-    KONY_PATH=$(grumpi::toAbsolutePath "$KONY_PATH")
-    if [ ! -e "$KONY_PATH" ]; then
-      grumpi::io::error "konyPath not valid. Please check your properties file."
-      grumpi::die
-    fi
+    grumpi::gen::checkForPathProperty 'konyPath'
 
     if [ -z "$KAR_PATH" ] || [ ! -e "$KAR_PATH" ]; then
       grumpi::io::error "Generating an IPA from a Kony project, but a valid .KAR file was not provided."
@@ -66,9 +46,9 @@ function grumpi::gen::validateData() {
     fi
   fi
 
-  grumpi::gen::checkForProperty 'provisioningProfile'
-  grumpi::gen::checkForProperty 'certPath'
-  grumpi::gen::checkForProperty 'p12Path'
+  grumpi::gen::checkForPathProperty 'provisioningProfile'
+  grumpi::gen::checkForPathProperty 'certPath'
+  grumpi::gen::checkForPathProperty 'p12Path'
 
   grumpi::io::echoln "All data provided OK!"
 }

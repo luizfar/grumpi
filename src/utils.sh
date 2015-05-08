@@ -12,6 +12,14 @@ function grumpi::readProperty() {
   echo `grep "^$1" "$PROP_FILE" | awk -F':' '{print $2}' | xargs`
 }
 
+function grumpi::readPropertyAsPath() {
+  VALUE=$(grumpi::readProperty "$1")
+  if [ ! -z "$VALUE" ] && [[ "$VALUE" != /* ]]; then
+    VALUE=$(cd $(dirname "$PROP_FILE") && pwd -P)/"$VALUE"
+  fi
+  echo "$VALUE"
+}
+
 function grumpi::die() {
   grumpi::cleanAndExit 1
 }

@@ -11,7 +11,7 @@ function grumpi::gen::kony::extractKarIntoXCodeProject() {
     rm -rf "$KONY_GENERATED_PROJECT_NAME"
   fi
 
-  KONY_PATH=$(grumpi::readProperty 'konyPath')
+  KONY_PATH=$(grumpi::readPropertyAsPath 'konyPath')
   KONY_IOS_PLUGIN_PATH=$KONY_PATH/Kony_Studio/plugins/com.kony.ios*
   cp $KONY_IOS_PLUGIN_PATH .
   unzip -oq com.kony.ios*

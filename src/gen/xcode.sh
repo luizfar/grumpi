@@ -12,7 +12,7 @@ function grumpi::gen::xcode::archiveXcodeProjectAndGenerateFromArchive {
   GRUMPI_NAME=$(grumpi::grumpiName)
 
   SIGNING_ID=$(grumpi::readProperty 'signingId')
-  PROFILE_PATH=$(grumpi::readProperty 'provisioningProfile')
+  PROFILE_PATH=$(grumpi::readPropertyAsPath 'provisioningProfile')
   PROVISIONING_PROFILE=$(grumpi::gen::xcode::readProvisioningProfileUuid $PROFILE_PATH)
 
   INITIAL_PATH=`pwd`
